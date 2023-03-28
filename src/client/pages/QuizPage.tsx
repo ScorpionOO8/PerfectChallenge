@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Button, Container, Heading, VStack, FormControl, FormLabel, Radio, RadioGroup } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
+import { Box, Button, Container, Heading, VStack, FormControl, FormLabel, Radio, RadioGroup } from '@chakra-ui/react';
 import { Question } from '../../Shared/interfaces/Question';
 import { questions } from '../utils/questions';
 
@@ -36,11 +36,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ question, onAnswered, isLas
   );
 };
 
-interface QuizPageProps {
-  onFinish: (scores: Record<string, number>) => void;
-}
-
-const QuizPage: React.FC<QuizPageProps> = ({ onFinish }) => {
+const QuizPage: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const history = useHistory();
@@ -52,32 +48,27 @@ const QuizPage: React.FC<QuizPageProps> = ({ onFinish }) => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
       const scores = calculateScores(answers);
-      onFinish(scores);
-      history.push('/results');
+      history.push('/results', { scores });
     }
   };
 
   const calculateScores = (answers: number[]): Record<string, number> => {
     const scores: Record<string, number> = {};
-  
+
     questions.forEach((question, index) => {
       const category = question.category;
       const answer = answers[index];
-  
+
       if (scores[category]) {
         scores[category] += answer;
       } else {
         scores[category] = answer;
       }
     });
-  
-    // Get top 4 categories with highest scores
-    const sortedScores = Object.entries(scores).sort((a, b) => b[1] - a[1]).slice(0, 4);
-    const topCategories = sortedScores.map(([category]) => category);
-  
+
     return scores;
   };
-  
+
   return (
     <Container maxW="container.md" centerContent>
       <Box textAlign="center">
@@ -90,17 +81,9 @@ const QuizPage: React.FC<QuizPageProps> = ({ onFinish }) => {
             isLastQuestion={currentQuestionIndex === questions.length - 1}
           />
         </VStack>
-        {currentQuestionIndex === questions.length && (
-          <Button onClick={() => {
-            const scores = calculateScores(answers);
-            onFinish(scores);
-            history.push('/results');
-          }}>
-            Finish
-          </Button>
-        )}
       </Box>
     </Container>
   );
 };
+
 export default QuizPage;

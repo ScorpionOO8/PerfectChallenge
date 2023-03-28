@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button, Container, Heading, VStack, Text, SimpleGrid } from '@chakra-ui/react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Habit } from '../../Shared/interfaces/Habit';
 import { habits } from '../utils/habits';
 
@@ -9,8 +9,10 @@ interface ResultsPageProps {
   scores: Record<string, number>;
 }
 
-const ResultsPage: React.FC<ResultsPageProps> = ({ habits, scores }) => {
+const ResultsPage: React.FC = () => {
   const history = useHistory();
+  const location = useLocation<ResultsPageProps>();
+  const { scores } = location.state;
 
   const handleRestartQuiz = () => {
     history.push('/quiz');
