@@ -1,0 +1,35 @@
+app PerfectChallenge {
+  wasp: {
+    version: "^0.9.0"
+  },
+  title: "PerfectChallenge",
+  dependencies: [
+    ("node-fetch", "3.3.0"),
+    ("@chakra-ui/react", "1.8.8"),
+    ("react-icons", "4.8.0"),
+    ("@emotion/react", "11.10.6"),
+    ("@emotion/styled", "11.10.6"),
+    ("framer-motion", "6.5.1"),
+    ("react-hook-form", "7.43.1"),
+    ("pdfjs-dist", "3.3.122"),
+    ("@types/pdfjs-dist", "2.10.378"),
+    ("stripe", "11.15.0"),
+    ("micro", "10.0.1"),
+    ("@sendgrid/mail", "7.7.0")
+  ],
+}
+
+route RootRoute { path: "/", to: HomePage }
+page HomePage {
+  component: import HomePage from "@client/pages/Homepage"
+}
+
+route QuizRoute { path: "/quiz", to: QuizPage }
+page QuizPage {
+  component: import QuizPage from "@client/pages/QuizPage"
+}
+
+route ResultsRoute { path: "/results", to: ResultsPage }
+page ResultsPage {
+  component: import ResultsPage from "@client/pages/ResultsPage"
+}
