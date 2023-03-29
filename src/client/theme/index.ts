@@ -1,25 +1,11 @@
-/* import { extendTheme } from '@chakra-ui/react';
-
-const theme = extendTheme({
-  colors: {
-    teal: {
-      500: '#38B2AC',
-    },
-  },
-  fonts: {
-    heading: 'Poppins, sans-serif',
-    body: 'Poppins, sans-serif',
-  },
-});
-
-export default theme; */
-
 import { extendTheme } from '@chakra-ui/react';
 // import { styles } from './styles';
 // import { colors } from './colors';
 // import { components } from './components';
 
 import { StyleFunctionProps } from '@chakra-ui/theme-tools';
+import { textStyles, fonts } from './text';
+import { semanticTokens } from './tokens';
 import { Input as ChakraInput, Button as ChakraButton, Textarea as ChakraTextarea, Checkbox as ChakraCheckbox, AlertDialog as ChakraAlertDialog } from '@chakra-ui/react';
 import {} from '@chakra-ui/react';
 
@@ -242,6 +228,9 @@ export const theme = extendTheme({
     },
   },
   config,
+  textStyles,
+  fonts,
+  semanticTokens,
   styles,
   layerStyles: {
     card: {

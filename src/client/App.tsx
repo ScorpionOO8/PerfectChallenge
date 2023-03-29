@@ -1,23 +1,17 @@
-//import React from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { theme} from './styles/theme';
-import HomePage from './pages/HomePage';
-import QuizPage from './pages/QuizPage';
-import ResultsPage from './pages/ResultsPage';
+import { ChakraProvider, VStack, HStack, Button } from '@chakra-ui/react';
+import { theme } from './theme';
+import { ReactNode, useState } from 'react';
+import BorderBox from './components/BorderBox';
 
-const App: React.FC = () => {
+export default function App({ children }: { children: ReactNode }) {
+
   return (
     <ChakraProvider theme={theme}>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/quiz" component={QuizPage} />
-          <Route path="/results" component={ResultsPage} />
-        </Switch>
-      </BrowserRouter>
+      <VStack>
+        <BorderBox>
+          {children}
+        </BorderBox>
+      </VStack>
     </ChakraProvider>
   );
-};
-
-export default App;
+}

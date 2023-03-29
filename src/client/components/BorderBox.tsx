@@ -6,7 +6,7 @@ interface BorderBoxProps extends BoxProps {
 
 export default function BorderBox({ children, ...props }: BorderBoxProps) {
   return (
-    <Box width={['sm', 'lg', 'xl']} borderRadius='lg' bgGradient='linear(to-b, orange.100, purple.300)' mt={7} {...props}>
+    <Box width={['sm', 'lg', 'xl']} borderRadius='lg' bgGradient='linear(to-b, blue.300, green.300)' mt={7} {...props}>
       <VStack
         bgColor='bg-contrast-overlay'
         border='3px solid transparent'

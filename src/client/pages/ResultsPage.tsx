@@ -73,7 +73,7 @@ const ResultsPage: React.FC = () => {
                   ))}
                 </Stack>
               </RadioGroup>
-              <Button colorScheme="teal" onClick={handleSubmit} isDisabled={!currentSelection}>
+              <Button colorScheme="blue" onClick={handleSubmit} isDisabled={!currentSelection}>
                 Submit
               </Button>
             </VStack>
@@ -97,7 +97,7 @@ const ResultsPage: React.FC = () => {
                   ))}
                 </SimpleGrid>
               </VStack>
-              <Button colorScheme="teal" onClick={handleRestartQuiz}>
+              <Button colorScheme="blue" onClick={handleRestartQuiz}>
                 Restart Quiz
               </Button>
             </>

@@ -4,11 +4,13 @@ import { Box, Button, Container, Heading, VStack, FormControl, FormLabel, Radio,
 import { Question } from '../../Shared/interfaces/Question';
 import { questions } from '../utils/questions';
 
-interface FinalQuestionFormProps {
+interface QuizFormProps {
+  question: Question;
   onAnswered: (answer: number) => void;
+  isFinalQuestion: boolean;
 }
 
-const FinalQuestionForm: React.FC<FinalQuestionFormProps> = ({ onAnswered }) => {
+const QuizForm: React.FC<QuizFormProps> = ({ question, onAnswered, isFinalQuestion }) => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | undefined>(undefined);
 
   const handleAnswer = () => {
@@ -20,11 +22,8 @@ const FinalQuestionForm: React.FC<FinalQuestionFormProps> = ({ onAnswered }) => 
   return (
     <Box>
       <FormControl as="fieldset">
-        <FormLabel as="legend">How many habits do you want to take on?</FormLabel>
-        <RadioGroup
-          value={selectedAnswer}
-          onChange={(value: string) => setSelectedAnswer(parseInt(value))}
-        >
+        <FormLabel as="legend">{isFinalQuestion ? 'How many habits do you want to take on?' : question.text}</FormLabel>
+        <RadioGroup value={selectedAnswer} onChange={(value: string) => setSelectedAnswer(parseInt(value))}>
           <VStack spacing={2}>
             {[...Array(5)].map((_, index) => (
               <Radio key={index} value={index + 1}>
@@ -34,54 +33,13 @@ const FinalQuestionForm: React.FC<FinalQuestionFormProps> = ({ onAnswered }) => 
           </VStack>
         </RadioGroup>
         <Button
-        colorScheme="teal"
-        mt={4}
-        onClick={handleAnswer}
-        isDisabled={selectedAnswer === undefined}
+          colorScheme="blue"
+          mt={4}
+          onClick={handleAnswer}
+          isDisabled={selectedAnswer === undefined}
         >
-        Submit
-      </Button>
-      </FormControl>
-    </Box>
-  );
-};
-
-interface QuestionFormProps {
-  question: Question;
-  onAnswered: (answer: number) => void;
-  isLastQuestion: boolean;
-}
-
-const QuestionForm: React.FC<QuestionFormProps> = ({ question, onAnswered, isLastQuestion }) => {
-  const [selectedAnswer, setSelectedAnswer] = useState<number | undefined>(undefined);
-
-  const handleAnswer = () => {
-    if (selectedAnswer !== undefined) {
-      onAnswered(selectedAnswer);
-    }
-  };
-
-  return (
-    <Box>
-      <FormControl as="fieldset">
-        <FormLabel as="legend">{question.text}</FormLabel>
-        <RadioGroup value={selectedAnswer} onChange={(value: string) => setSelectedAnswer(parseInt(value))}>
-          <VStack spacing={2}>
-            <Radio value={1}>1</Radio>
-            <Radio value={2}>2</Radio>
-            <Radio value={3}>3</Radio>
-            <Radio value={4}>4</Radio>
-            <Radio value={5}>5</Radio>
-          </VStack>
-        </RadioGroup>
-        <Button
-        colorScheme="teal"
-        mt={4}
-        onClick={handleAnswer}
-        isDisabled={selectedAnswer === undefined}
-        >
-        Submit
-      </Button>
+          Submit
+        </Button>
       </FormControl>
     </Box>
   );
@@ -125,16 +83,14 @@ const QuizPage: React.FC = () => {
       <Box textAlign="center">
         <Heading mb={6}>Quiz</Heading>
         <VStack spacing={6}>
-          {currentQuestionIndex < totalQuestions ? (
-            <QuestionForm
+          {currentQuestionIndex <= totalQuestions ? (
+            <QuizForm
               key={currentQuestionIndex}
               question={questions[currentQuestionIndex]}
               onAnswered={handleAnswered}
-              isLastQuestion={currentQuestionIndex === totalQuestions - 1}
+              isFinalQuestion={currentQuestionIndex === totalQuestions}
             />
-          ) : (
-            <FinalQuestionForm onAnswered={handleAnswered} />
-          )}
+          ) : null}
         </VStack>
       </Box>
     </Container>
