@@ -12,7 +12,7 @@ interface LikertScaleProps {
   min: number;
   max: number;
   step: number;
-  value: number;
+  value: number | null;
   onChange: (value: number) => void;
 }
 
@@ -36,7 +36,7 @@ const LikertScale: React.FC<LikertScaleProps> = ({ min, max, step, value, onChan
         p={0}
         width={buttonSize}
         height={buttonSize}
-        border="none"
+        border={"none"}
         backgroundColor={'transparent'}
       >
         <Box
@@ -53,7 +53,7 @@ const LikertScale: React.FC<LikertScaleProps> = ({ min, max, step, value, onChan
     );
   }
 
-  return <HStack spacing={3} justifyContent="center">{options}</HStack>;
+  return <HStack spacing={5} justifyContent="center">{options}</HStack>;
 };
 
 export default LikertScale;
