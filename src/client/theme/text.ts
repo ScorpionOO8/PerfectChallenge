@@ -2,8 +2,8 @@ const FONT_SCALE_BASE = 1;
 const FONT_SCALE_MULTIPLIER = 1.25;
 
 export const fonts = {
-  heading: `'Inter', sans-serif`,
-  body: `'Inter', sans-serif`,
+  heading: `Nunito, sans-serif`,
+  body: `Nunito, sans-serif`,
 };
 
 export const textStyles = {
