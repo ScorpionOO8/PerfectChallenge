@@ -2,3 +2,4 @@
 /.env.server
 /.env.client
 output.txt
+src/client/pages/diff.patch

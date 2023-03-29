@@ -2,11 +2,7 @@ import React from 'react';
 import { Box, Button, Container, Heading, Text } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
 
-import { questions } from '../utils/questions';
-
 const Homepage: React.FC = () => {
-  console.log(questions); // add this line to log the questions array to the console
-
 
   const history = useHistory();
 

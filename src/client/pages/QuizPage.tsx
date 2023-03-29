@@ -4,6 +4,48 @@ import { Box, Button, Container, Heading, VStack, FormControl, FormLabel, Radio,
 import { Question } from '../../Shared/interfaces/Question';
 import { questions } from '../utils/questions';
 
+interface FinalQuestionFormProps {
+  onAnswered: (answer: number) => void;
+}
+
+const FinalQuestionForm: React.FC<FinalQuestionFormProps> = ({ onAnswered }) => {
+  const [selectedAnswer, setSelectedAnswer] = useState<number | undefined>(undefined);
+
+  const handleAnswer = () => {
+    if (selectedAnswer !== undefined) {
+      onAnswered(selectedAnswer);
+    }
+  };
+
+  return (
+    <Box>
+      <FormControl as="fieldset">
+        <FormLabel as="legend">How many habits do you want to take on?</FormLabel>
+        <RadioGroup
+          value={selectedAnswer}
+          onChange={(value: string) => setSelectedAnswer(parseInt(value))}
+        >
+          <VStack spacing={2}>
+            {[...Array(5)].map((_, index) => (
+              <Radio key={index} value={index + 1}>
+                {index + 1}
+              </Radio>
+            ))}
+          </VStack>
+        </RadioGroup>
+        <Button
+        colorScheme="teal"
+        mt={4}
+        onClick={handleAnswer}
+        isDisabled={selectedAnswer === undefined}
+        >
+        Submit
+      </Button>
+      </FormControl>
+    </Box>
+  );
+};
+
 interface QuestionFormProps {
   question: Question;
   onAnswered: (answer: number) => void;
@@ -11,10 +53,12 @@ interface QuestionFormProps {
 }
 
 const QuestionForm: React.FC<QuestionFormProps> = ({ question, onAnswered, isLastQuestion }) => {
-  const [selectedAnswer, setSelectedAnswer] = useState<number>(1);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | undefined>(undefined);
 
   const handleAnswer = () => {
-    onAnswered(selectedAnswer);
+    if (selectedAnswer !== undefined) {
+      onAnswered(selectedAnswer);
+    }
   };
 
   return (
@@ -30,7 +74,14 @@ const QuestionForm: React.FC<QuestionFormProps> = ({ question, onAnswered, isLas
             <Radio value={5}>5</Radio>
           </VStack>
         </RadioGroup>
-        <Button colorScheme="teal" mt={4} onClick={handleAnswer}>Submit</Button>
+        <Button
+        colorScheme="teal"
+        mt={4}
+        onClick={handleAnswer}
+        isDisabled={selectedAnswer === undefined}
+        >
+        Submit
+      </Button>
       </FormControl>
     </Box>
   );
@@ -40,15 +91,15 @@ const QuizPage: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const history = useHistory();
+  const totalQuestions = questions.length;
 
   const handleAnswered = (answer: number) => {
-    setAnswers([...answers, answer]);
-
-    if (currentQuestionIndex < questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
+    if (currentQuestionIndex === totalQuestions) {
       const scores = calculateScores(answers);
-      history.push('/results', { scores });
+      history.push('/results', { scores, totalHabits: answer });
+    } else {
+      setAnswers([...answers, answer]);
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   };
 
@@ -74,12 +125,16 @@ const QuizPage: React.FC = () => {
       <Box textAlign="center">
         <Heading mb={6}>Quiz</Heading>
         <VStack spacing={6}>
-          <QuestionForm
-            key={currentQuestionIndex}
-            question={questions[currentQuestionIndex]}
-            onAnswered={handleAnswered}
-            isLastQuestion={currentQuestionIndex === questions.length - 1}
-          />
+          {currentQuestionIndex < totalQuestions ? (
+            <QuestionForm
+              key={currentQuestionIndex}
+              question={questions[currentQuestionIndex]}
+              onAnswered={handleAnswered}
+              isLastQuestion={currentQuestionIndex === totalQuestions - 1}
+            />
+          ) : (
+            <FinalQuestionForm onAnswered={handleAnswered} />
+          )}
         </VStack>
       </Box>
     </Container>
