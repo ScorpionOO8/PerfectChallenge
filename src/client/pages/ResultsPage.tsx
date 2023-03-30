@@ -73,8 +73,8 @@ const ResultsPage: React.FC = () => {
 
   return (
     <Container maxW="container.md" centerContent>
-      <Box textAlign="center">
-        <Heading mb={6}>Your 30-Day Challenge</Heading>
+      <Box textAlign="start">
+        <Heading mb={6} textAlign="center">Your 30-Day Challenge</Heading>
         <VStack spacing={6}>
           {step < selectedHabits.length ? (
             <AnimatePresence exitBeforeEnter>
