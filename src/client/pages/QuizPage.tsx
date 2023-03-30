@@ -17,13 +17,13 @@ const ParentContainer: React.FC = ({ children }) => {
   const minBoxHeight = useBreakpointValue({
     base: '160px',
     sm: '120px',
-    md: '220px',
-    lg: '220px',
-    xl: '220px',
+    md: '250px',
+    lg: '250px',
+    xl: '250px',
   });
 
   return (
-    <Box minHeight={minBoxHeight} position="relative">
+    <Box position="relative" minHeight={minBoxHeight}>
       {children}
     </Box>
   );
@@ -115,9 +115,14 @@ const QuizPage: React.FC = () => {
   };
 
   const pageVariants = {
-    initial: { scale: 0.8, opacity: 0 },
-    in: { scale: 1, opacity: 1 },
-    out: { scale: 0.8, opacity: 0 }
+    initial: { x: '50%', opacity: 0 },
+    in: { x: 0, opacity: 1 },
+    out: { x: '-50%', opacity: 0 }
+  };
+
+  const transition = {
+    duration: 0.5, // Animation duration in seconds
+    ease: 'easeInOut', // Easing function
   };
 
   return (
@@ -132,7 +137,7 @@ const QuizPage: React.FC = () => {
                 question={questions[currentQuestionIndex]}
                 onAnswered={handleAnswered}
                 isFinalQuestion={currentQuestionIndex === totalQuestions}
-                initial="initial" animate="in" exit="out" variants={pageVariants}
+                initial="initial" animate="in" exit="out" transition={transition} variants={pageVariants}
               />
             </AnimatePresence>
           ) : null}

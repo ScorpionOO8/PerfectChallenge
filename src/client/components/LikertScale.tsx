@@ -34,19 +34,17 @@ const LikertScale: React.FC<LikertScaleProps> = ({ min, max, step, value, onChan
         key={i}
         onClick={() => onChange(i)}
         p={0}
-        width={buttonSize}
-        height={buttonSize}
         border={"none"}
         backgroundColor={'transparent'}
         borderRadius="10px"
       >
         <Box
-          width="100%"
-          height="100%"
           border="4px"
           borderColor={i === value ? 'white' : 'transparent'}
           borderRadius="10px"
           overflow="hidden"
+          width={buttonSize}
+          height={buttonSize}
         >
           <Image src={images[i - 1]} alt={`Option ${i}`} boxSize="100%" />
         </Box>

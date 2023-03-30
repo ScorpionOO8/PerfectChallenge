@@ -11,6 +11,7 @@ import {
   RadioGroup,
   Stack,
 } from '@chakra-ui/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Habit } from '../../Shared/interfaces/Habit';
 import { habits } from '../utils/habits';
@@ -21,6 +22,8 @@ interface ResultsPageProps {
   scores: Record<string, number>;
   totalHabits: number;
 }
+
+const MotionVStack = motion(VStack);
 
 const ResultsPage: React.FC = () => {
   const history = useHistory();
@@ -56,27 +59,50 @@ const ResultsPage: React.FC = () => {
     return acc;
   }, {} as Record<string, string>);
 
+
+  const pageVariants = {
+    initial: { x: '50%', opacity: 0 },
+    in: { x: 0, opacity: 1 },
+    out: { x: '-50%', opacity: 0 }
+  };
+
+  const transition = {
+    duration: 0.5,
+    ease: 'easeInOut',
+  };
+
   return (
     <Container maxW="container.md" centerContent>
       <Box textAlign="center">
         <Heading mb={6}>Your 30-Day Challenge</Heading>
         <VStack spacing={6}>
           {step < selectedHabits.length ? (
-            <VStack spacing={4} width="100%">
-              <Text>Select a habit from the {categoryMap[selectedHabits[step].category]} category:</Text>
-              <RadioGroup value={currentSelection} onChange={handleOptionChange}>
-                <Stack>
-                  {selectedHabits[step].options.map((option, index) => (
-                    <Radio key={index} value={option}>
-                      {option}
-                    </Radio>
-                  ))}
-                </Stack>
-              </RadioGroup>
-              <Button colorScheme="blue" onClick={handleSubmit} isDisabled={!currentSelection}>
-                Submit
-              </Button>
-            </VStack>
+            <AnimatePresence exitBeforeEnter>
+              <MotionVStack
+                key={step}
+                spacing={4}
+                width="100%"
+                initial="initial"
+                animate="in"
+                exit="out"
+                transition={transition}
+                variants={pageVariants}
+              >
+                <Text>Select a habit from the {categoryMap[selectedHabits[step].category]} category:</Text>
+                <RadioGroup value={currentSelection} onChange={handleOptionChange}>
+                  <Stack>
+                    {selectedHabits[step].options.map((option, index) => (
+                      <Radio key={index} value={option}>
+                        {option}
+                      </Radio>
+                    ))}
+                  </Stack>
+                </RadioGroup>
+                <Button colorScheme="blue" onClick={handleSubmit} isDisabled={!currentSelection}>
+                  Submit
+                </Button>
+              </MotionVStack>
+            </AnimatePresence>
           ) : (
           <>
             <VStack spacing={4} width="100%">
@@ -102,9 +128,9 @@ const ResultsPage: React.FC = () => {
               </Button>
             </>
           )}
-        </VStack>
-      </Box>
-    </Container>
-  );
-};
-export default ResultsPage;      
+          </VStack>
+        </Box>
+      </Container>
+    );
+  };
+export default ResultsPage;
