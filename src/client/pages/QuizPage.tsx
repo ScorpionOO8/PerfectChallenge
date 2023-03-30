@@ -31,7 +31,7 @@ const QuizForm = forwardRef<HTMLDivElement, QuizFormProps>(
               value={selectedAnswer === null ? '' : selectedAnswer.toString()}
               onChange={(value: string) => setSelectedAnswer(parseInt(value))}
             >
-              <VStack spacing={2}>
+              <VStack spacing={2} mt={1} mb={4}>
                 {[...Array(5)].map((_, index) => (
                   <Radio key={index} value={index + 1}>
                     {index + 1}
@@ -50,7 +50,6 @@ const QuizForm = forwardRef<HTMLDivElement, QuizFormProps>(
           )}
           <Button
             colorScheme="blue"
-            mt={4}
             onClick={handleAnswer}
             isDisabled={selectedAnswer === null}
           >

@@ -52,7 +52,7 @@ const LikertScale: React.FC<LikertScaleProps> = ({ min, max, step, value, onChan
     );
   }
 
-  return <HStack spacing={5} justifyContent="center">{options}</HStack>;
+  return <HStack spacing={5} justifyContent="center" mt={3} mb={7} >{options}</HStack>;
 };
 
 export default LikertScale;
