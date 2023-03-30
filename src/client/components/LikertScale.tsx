@@ -38,6 +38,7 @@ const LikertScale: React.FC<LikertScaleProps> = ({ min, max, step, value, onChan
         height={buttonSize}
         border={"none"}
         backgroundColor={'transparent'}
+        borderRadius="10px"
       >
         <Box
           width="100%"

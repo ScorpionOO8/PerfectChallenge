@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Box, Button, Container, Heading, VStack, FormControl, FormLabel, Radio, RadioGroup } from '@chakra-ui/react';
+import { Box, Button, Container, Heading, VStack, FormControl, FormLabel, Radio, RadioGroup, useBreakpointValue } from '@chakra-ui/react';
 import { Question } from '../../Shared/interfaces/Question';
 import { questions } from '../utils/questions';
 import LikertScale from '../components/LikertScale';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface QuizFormProps {
   question: Question;
@@ -11,50 +12,74 @@ interface QuizFormProps {
   isFinalQuestion: boolean;
 }
 
-const QuizForm: React.FC<QuizFormProps> = ({ question, onAnswered, isFinalQuestion }) => {
-  const [selectedAnswer, setSelectedAnswer] = useState<number | undefined>(undefined);
-
-  const handleAnswer = () => {
-    if (selectedAnswer !== undefined) {
-      onAnswered(selectedAnswer);
-    }
-  };
+const ParentContainer: React.FC = ({ children }) => {
+  // Use a fixed minimum height for the parent container
+  const minBoxHeight = useBreakpointValue({
+    base: '160px',
+    sm: '120px',
+    md: '220px',
+    lg: '220px',
+    xl: '220px',
+  });
 
   return (
-    <Box>
-      <FormControl as="fieldset">
-        <FormLabel as="legend">{isFinalQuestion ? 'How many habits do you want to take on?' : question.text}</FormLabel>
-        {isFinalQuestion ? (
-          <RadioGroup value={selectedAnswer} onChange={(value: string) => setSelectedAnswer(parseInt(value))}>
-            <VStack spacing={2}>
-              {[...Array(5)].map((_, index) => (
-                <Radio key={index} value={index + 1}>
-                  {index + 1}
-                </Radio>
-              ))}
-            </VStack>
-          </RadioGroup>
-        ) : (
-          <LikertScale
-            min={1}
-            max={5}
-            step={1}
-            value={selectedAnswer || 1}
-            onChange={(value) => setSelectedAnswer(value)}
-          />
-        )}
-        <Button
-          colorScheme="blue"
-          mt={4}
-          onClick={handleAnswer}
-          isDisabled={selectedAnswer === undefined}
-        >
-          Submit
-        </Button>
-      </FormControl>
+    <Box minHeight={minBoxHeight} position="relative">
+      {children}
     </Box>
   );
 };
+
+const QuizForm = forwardRef<HTMLDivElement, QuizFormProps>(
+  ({ question, onAnswered, isFinalQuestion }, ref) => {
+    const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+
+    const handleAnswer = () => {
+      if (selectedAnswer !== null) {
+        onAnswered(selectedAnswer);
+      }
+    };
+
+    return (
+      <Box ref={ref} textAlign="center">
+        <FormControl as="fieldset">
+          <FormLabel as="legend">{isFinalQuestion ? 'How many habits do you want to take on?' : question.text}</FormLabel>
+          {isFinalQuestion ? (
+            <RadioGroup
+              value={selectedAnswer === null ? '' : selectedAnswer.toString()}
+              onChange={(value: string) => setSelectedAnswer(parseInt(value))}
+            >
+              <VStack spacing={2}>
+                {[...Array(5)].map((_, index) => (
+                  <Radio key={index} value={index + 1}>
+                    {index + 1}
+                  </Radio>
+                ))}
+              </VStack>
+            </RadioGroup>
+          ) : (
+            <LikertScale
+              min={1}
+              max={5}
+              step={1}
+              value={selectedAnswer}
+              onChange={(value) => setSelectedAnswer(value)}
+            />
+          )}
+          <Button
+            colorScheme="blue"
+            mt={4}
+            onClick={handleAnswer}
+            isDisabled={selectedAnswer === null}
+          >
+            Submit
+          </Button>
+        </FormControl>
+      </Box>
+    );
+  }
+);
+
+const MotionQuizForm = motion(QuizForm);
 
 const QuizPage: React.FC = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -89,21 +114,30 @@ const QuizPage: React.FC = () => {
     return scores;
   };
 
+  const pageVariants = {
+    initial: { scale: 0.8, opacity: 0 },
+    in: { scale: 1, opacity: 1 },
+    out: { scale: 0.8, opacity: 0 }
+  };
+
   return (
     <Container maxW="container.md" centerContent>
-      <Box textAlign="center">
-        <Heading mb={6}>Quiz</Heading>
-        <VStack spacing={6}>
+      <Heading mb={6}>Quiz</Heading>
+      <VStack spacing={6}>
+        <ParentContainer>
           {currentQuestionIndex <= totalQuestions ? (
-            <QuizForm
-              key={currentQuestionIndex}
-              question={questions[currentQuestionIndex]}
-              onAnswered={handleAnswered}
-              isFinalQuestion={currentQuestionIndex === totalQuestions}
-            />
+            <AnimatePresence exitBeforeEnter>
+              <MotionQuizForm
+                key={currentQuestionIndex}
+                question={questions[currentQuestionIndex]}
+                onAnswered={handleAnswered}
+                isFinalQuestion={currentQuestionIndex === totalQuestions}
+                initial="initial" animate="in" exit="out" variants={pageVariants}
+              />
+            </AnimatePresence>
           ) : null}
-        </VStack>
-      </Box>
+        </ParentContainer>
+      </VStack>
     </Container>
   );
 };

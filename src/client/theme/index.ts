@@ -53,6 +53,8 @@ export const Button = {
   baseStyle: {
     border: 'sm',
     transition: 'transform 0.05s ease-out, background 0.3s, opacity 0.3s',
+    mt: 4, // Margin-top value
+    mb: 4, // Margin-bottom value
   },
   variants: {
     solid: variantSolid,
