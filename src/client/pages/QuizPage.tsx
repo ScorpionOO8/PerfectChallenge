@@ -12,23 +12,6 @@ interface QuizFormProps {
   isFinalQuestion: boolean;
 }
 
-const ParentContainer: React.FC = ({ children }) => {
-  // Use a fixed minimum height for the parent container
-  const minBoxHeight = useBreakpointValue({
-    base: '160px',
-    sm: '120px',
-    md: '250px',
-    lg: '250px',
-    xl: '250px',
-  });
-
-  return (
-    <Box position="relative" minHeight={minBoxHeight}>
-      {children}
-    </Box>
-  );
-};
-
 const QuizForm = forwardRef<HTMLDivElement, QuizFormProps>(
   ({ question, onAnswered, isFinalQuestion }, ref) => {
     const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -128,20 +111,18 @@ const QuizPage: React.FC = () => {
   return (
     <Container maxW="container.md" centerContent>
       <Heading mb={6}>Quiz</Heading>
-      <VStack spacing={6}>
-        <ParentContainer>
-          {currentQuestionIndex <= totalQuestions ? (
-            <AnimatePresence exitBeforeEnter>
-              <MotionQuizForm
-                key={currentQuestionIndex}
-                question={questions[currentQuestionIndex]}
-                onAnswered={handleAnswered}
-                isFinalQuestion={currentQuestionIndex === totalQuestions}
-                initial="initial" animate="in" exit="out" transition={transition} variants={pageVariants}
-              />
-            </AnimatePresence>
-          ) : null}
-        </ParentContainer>
+        <VStack spacing={6}>
+            {currentQuestionIndex <= totalQuestions ? (
+              <AnimatePresence exitBeforeEnter>
+                <MotionQuizForm
+                  key={currentQuestionIndex}
+                  question={questions[currentQuestionIndex]}
+                  onAnswered={handleAnswered}
+                  isFinalQuestion={currentQuestionIndex === totalQuestions}
+                  initial="initial" animate="in" exit="out" transition={transition} variants={pageVariants}
+                />
+              </AnimatePresence>
+            ) : null}
       </VStack>
     </Container>
   );
