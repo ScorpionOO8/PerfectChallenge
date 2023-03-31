@@ -38,9 +38,9 @@ const ResultsPage: React.FC = () => {
   };
 
   const getTopImprovementAreas = (scores: Record<string, number>): string[] => {
-    const sortedCategories = Object.entries(scores).sort(([, a], [, b]) => b - a);
+    const sortedCategories = Object.entries(scores).sort(([, a], [, b]) => a - b); // Sort in ascending order
     return sortedCategories.slice(0, totalHabits).map(([category]) => category);
-  };
+  };  
 
   const handleOptionChange = (value: string) => {
     setCurrentSelection(value);
