@@ -28,7 +28,7 @@ const QuizForm = forwardRef<HTMLDivElement, QuizFormProps>(
           <FormLabel as="legend">{isFinalQuestion ? 'How many habits do you want to take on?' : question.text}</FormLabel>
           {isFinalQuestion ? (
             <RadioGroup
-              value={selectedAnswer === null ? '' : selectedAnswer.toString()}
+              value={selectedAnswer === null ? '' : selectedAnswer}
               onChange={(value: string) => setSelectedAnswer(parseInt(value))}
             >
               <VStack spacing={2} mt={1} mb={4}>
