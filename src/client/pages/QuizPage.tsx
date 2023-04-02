@@ -1,6 +1,6 @@
 import React, { useState, forwardRef } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Box, Button, Container, Heading, VStack, FormControl, FormLabel, Radio, RadioGroup, useBreakpointValue } from '@chakra-ui/react';
+import { Box, Button, Container, Heading, VStack, FormControl, FormLabel, Radio, RadioGroup, useTheme } from '@chakra-ui/react';
 import { Question } from '../../Shared/interfaces/Question';
 import { questions } from '../utils/questions';
 import LikertScale from '../components/LikertScale';
@@ -52,6 +52,8 @@ const QuizForm = forwardRef<HTMLDivElement, QuizFormProps>(
             colorScheme="blue"
             onClick={handleAnswer}
             isDisabled={selectedAnswer === null}
+            mt='3' // Margin-top value
+            mb='2'
           >
             Submit
           </Button>
@@ -107,21 +109,45 @@ const QuizPage: React.FC = () => {
     ease: 'easeInOut', // Easing function
   };
 
+  const theme = useTheme();
+  const progressBarColor = theme.colors.green[300];
+  const borderRadius = theme.radii.md;
+  const progressPercentage = ((currentQuestionIndex+1)  / (totalQuestions+1)) * 100;
+
   return (
     <Container maxW="container.md" centerContent>
       <Heading mb={6}>Quiz</Heading>
-        <VStack spacing={6}>
-            {currentQuestionIndex <= totalQuestions ? (
-              <AnimatePresence exitBeforeEnter>
-                <MotionQuizForm
-                  key={currentQuestionIndex}
-                  question={questions[currentQuestionIndex]}
-                  onAnswered={handleAnswered}
-                  isFinalQuestion={currentQuestionIndex === totalQuestions}
-                  initial="initial" animate="in" exit="out" transition={transition} variants={pageVariants}
-                />
-              </AnimatePresence>
-            ) : null}
+        <Box
+            width="100%"
+            mb={4}
+            borderRadius="md"
+            bg="gray.700"
+            h="6px"
+            overflow="hidden"
+          >
+          <motion.div
+            initial={{ width: '0%' }}
+            style={{
+              backgroundColor: progressBarColor,
+              height: '100%',
+              borderRadius: borderRadius,
+            }}
+            animate={{ width: `${progressPercentage}%` }}
+            transition={{ duration: 1.5, ease: 'easeInOut' }}
+          />
+        </Box>
+      <VStack>
+        {currentQuestionIndex <= totalQuestions ? (
+          <AnimatePresence exitBeforeEnter>
+            <MotionQuizForm
+              key={currentQuestionIndex}
+              question={questions[currentQuestionIndex]}
+              onAnswered={handleAnswered}
+              isFinalQuestion={currentQuestionIndex === totalQuestions}
+              initial="initial" animate="in" exit="out" transition={transition} variants={pageVariants}
+            />
+          </AnimatePresence>
+        ) : null}
       </VStack>
     </Container>
   );

@@ -18,7 +18,7 @@ const Homepage: React.FC = () => {
           Take a short quiz to find your weaknesses, and we'll create a
           custom 30-day self-improvement challenge for you.
         </Text>
-        <Button colorScheme="blue" onClick={onStartQuiz}>
+        <Button colorScheme="blue" onClick={onStartQuiz} mt='3' mb='2'>
           Start Quiz
         </Button>
       </Box>

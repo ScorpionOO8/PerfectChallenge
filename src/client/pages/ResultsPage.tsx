@@ -1,21 +1,11 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Container,
-  Heading,
-  VStack,
-  Text,
-  SimpleGrid,
-  Radio,
-  RadioGroup,
-  Stack,
-} from '@chakra-ui/react';
+import { Box, Button, Container, Heading, VStack, Text, SimpleGrid, Radio, RadioGroup, Stack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Habit } from '../../Shared/interfaces/Habit';
 import { habits } from '../utils/habits';
 import { categories } from '../utils/categories';
+import { useTheme } from '@chakra-ui/react';
 
 interface ResultsPageProps {
   habits: Habit[];
@@ -71,10 +61,36 @@ const ResultsPage: React.FC = () => {
     ease: 'easeInOut',
   };
 
+  const theme = useTheme();
+  const progressBarColor = theme.colors.green[300];
+  const borderRadius = theme.radii.md;
+  const progressPercentage = ((step+1) / (selectedHabits.length)) * 100;
+
   return (
     <Container maxW="container.md" centerContent>
       <Box textAlign="start">
         <Heading mb={6} textAlign="center">Your 30-Day Challenge</Heading>
+        {step < selectedHabits.length ? (
+          <Box
+            width="100%"
+            mb={4}
+            borderRadius="md"
+            bg="gray.700"
+            h="6px"
+            overflow="hidden"
+          >
+            <motion.div
+              initial={{ width: '0%' }}
+              style={{
+                backgroundColor: progressBarColor,
+                height: '100%',
+                borderRadius: borderRadius,
+              }}
+              animate={{ width: `${progressPercentage}%` }}
+              transition={{ duration: 1.5, ease: 'easeInOut' }}
+            />
+          </Box>
+        ) : null}
         <VStack spacing={6}>
           {step < selectedHabits.length ? (
             <AnimatePresence exitBeforeEnter>
@@ -98,7 +114,7 @@ const ResultsPage: React.FC = () => {
                     ))}
                   </Stack>
                 </RadioGroup>
-                <Button colorScheme="blue" onClick={handleSubmit} isDisabled={!currentSelection}>
+                <Button colorScheme="blue" onClick={handleSubmit} isDisabled={!currentSelection} mt='3' mb='2'>
                   Submit
                 </Button>
               </MotionVStack>
@@ -123,7 +139,7 @@ const ResultsPage: React.FC = () => {
                   ))}
                 </SimpleGrid>
               </VStack>
-              <Button colorScheme="blue" onClick={handleRestartQuiz}>
+              <Button colorScheme="blue" onClick={handleRestartQuiz} mt='3' mb='2'>
                 Restart Quiz
               </Button>
             </>
