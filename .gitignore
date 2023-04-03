@@ -4,3 +4,4 @@
 /.env.client
 output.txt
 src/client/pages/diff.patch
+.DS_Store
