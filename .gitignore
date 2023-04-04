@@ -8,8 +8,6 @@ src/client/pages/diff.patch
 *.ai.txt
 autopilot/
 src/.DS_Store
+suggestions/
 .vscode/settings.json
-.DS_Store
-/suggestions/
-.vscode/settings.json
-.vscode/settings.json
+.env
