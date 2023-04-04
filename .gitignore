@@ -10,4 +10,4 @@ autopilot/
 src/.DS_Store
 suggestions/
 .vscode/settings.json
-.env
+/.env
