@@ -5,3 +5,11 @@
 output.txt
 src/client/pages/diff.patch
 .DS_Store
+*.ai.txt
+autopilot/
+src/.DS_Store
+.vscode/settings.json
+.DS_Store
+/suggestions/
+.vscode/settings.json
+.vscode/settings.json
