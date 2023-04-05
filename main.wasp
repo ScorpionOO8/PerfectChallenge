@@ -20,6 +20,9 @@ app PerfectChallenge {
     ("micro", "10.0.1"),
     ("@sendgrid/mail", "7.7.0")
   ],
+  db: {
+    system: PostgreSQL
+  },
 }
 
 route RootRoute { path: "/", to: HomePage }

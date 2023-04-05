@@ -1,7 +1,7 @@
 import React, { useState, forwardRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Box, Button, Container, Heading, VStack, FormControl, FormLabel, Radio, RadioGroup, useTheme } from '@chakra-ui/react';
-import { Question } from '../../Shared/interfaces/Question';
+import { Question } from '../../shared/interfaces/Question';
 import { questions } from '../utils/questions';
 import LikertScale from '../components/LikertScale';
 import { AnimatePresence, motion } from 'framer-motion';

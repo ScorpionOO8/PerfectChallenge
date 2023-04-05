@@ -1,4 +1,4 @@
-import { Category } from '../../Shared/interfaces/Category';
+import { Category } from '../../shared/interfaces/Category';
 
 export const categories: Category[] = [
   {

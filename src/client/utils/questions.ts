@@ -1,4 +1,4 @@
-import { Question } from '../../Shared/interfaces/Question';
+import { Question } from '../../shared/interfaces/Question';
 
 export const questions: Question[] = [
   {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, Container, Heading, VStack, Text, SimpleGrid, Radio, RadioGroup, Stack } from '@chakra-ui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Habit } from '../../Shared/interfaces/Habit';
+import { Habit } from '../../shared/interfaces/Habit';
 import { habits } from '../utils/habits';
 import { categories } from '../utils/categories';
 import { useTheme } from '@chakra-ui/react';

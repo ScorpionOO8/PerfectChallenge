@@ -1,4 +1,4 @@
-import { Habit } from '../../Shared/interfaces/Habit';
+import { Habit } from '../../shared/interfaces/Habit';
 
 export const habits: Habit[] = [
   {
